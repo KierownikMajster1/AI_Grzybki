@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan ZUT</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+<h1>Plan ZUT</h1>
+<div class="container">
+    <!-- Left Panel -->
+    <div class="left-panel">
+        <label for="lecturer">Wykładowca</label>
+        <input type="text" id="lecturer" placeholder="Wpisz wykładowcę">
+
+        <label for="room">Sala</label>
+        <input type="text" id="room" placeholder="Wpisz salę">
+
+        <label for="subject">Przedmiot</label>
+        <input type="text" id="subject" placeholder="Wpisz przedmiot">
+
+        <label for="group">Grupa</label>
+        <input type="text" id="group" placeholder="Wpisz grupę">
+
+        <label for="studentId">Numer albumu</label>
+        <input type="text" id="studentId" placeholder="Wpisz numer albumu">
+
+        <button id="searchBtn" class="btn-primary">Szukaj</button>
+        <button id="clearBtn" class="btn-secondary">Wyczyść filtry</button>
+    </div>
+
+    <!-- Main Panel -->
+    <div class="main-panel">
+        <div class="controls">
+            <div>
+                <button id="dayView" class="view-btn">Plan dnia</button>
+                <button id="weekView" class="view-btn">Tydzień</button>
+                <button id="monthView" class="view-btn">Miesiąc</button>
+            </div>
+            <div class="date-display" id="currentDate">30.12 - 5.01.2025</div>
+            <div>
+                <button id="prevBtn" class="arrow-btn">&#8592;</button>
+                <button id="nextBtn" class="arrow-btn">&#8594;</button>
+            </div>
+        </div>
+
+        <!-- Separate tables for each view -->
+        <table class="calendar" id="dayTable" style="display: none;">
+            <thead>
+                <tr></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <table class="calendar" id="weekTable" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Godzina</th>
+                    <th>Poniedziałek</th>
+                    <th>Wtorek</th>
+                    <th>Środa</th>
+                    <th>Czwartek</th>
+                    <th>Piątek</th>
+                    <th>Sobota</th>
+                    <th>Niedziela</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <table class="calendar" id="monthTable" style="display: none;">
+            <thead>
+                <tr>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

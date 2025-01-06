@@ -1,0 +1,141 @@
+body, h1, button, input, table {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    padding: 50px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Layout Styling */
+.container {
+    display: flex;
+    gap: 20px;
+}
+
+/* Left Panel */
+.left-panel {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.left-panel label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.left-panel input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+.left-panel .btn-primary {
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.left-panel .btn-primary:hover {
+    background-color: #357abd;
+}
+
+.left-panel .btn-secondary {
+    background-color: #e0e0e0;
+    color: #333;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.left-panel .btn-secondary:hover {
+    background-color: #d6d6d6;
+}
+
+/* Main Panel */
+.main-panel {
+    flex: 1;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.view-btn, .arrow-btn {
+    background-color: #e0e0e0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.view-btn:hover, .arrow-btn:hover {
+    background-color: #d6d6d6;
+}
+
+.date-display {
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Calendar Table */
+.calendar {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    background-color: #fff;
+}
+
+.calendar th, .calendar td {
+    border: 1px solid #ccc;
+    padding: 5px;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.calendar th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+.calendar td {
+    height: 30px;
+    background-color: #fff;
+}
+
+#dayTable th {
+    font-size: 1.2em;
+}
+
+#monthTable td {
+    background-color: #fff;
+    height: 60px;
+}
+
+#weekTable td:first-child, #weekTable th:first-child {
+    background-color: #f0f0f0;
+    font-weight: bold;
+    width: 70px;
+    text-align: right;
+    padding-right: 10px;
+}
