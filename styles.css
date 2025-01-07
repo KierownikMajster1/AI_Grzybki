@@ -20,6 +20,7 @@ h1 {
 .container {
     display: flex;
     gap: 20px;
+    flex-wrap: wrap; /* Dodanie tego pozwala na dostosowanie układu w węższych ekranach */
 }
 
 /* Left Panel */
@@ -28,6 +29,7 @@ h1 {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    order: 1; /* Domyślnie filtry będą na pierwszym miejscu */
 }
 
 .left-panel label {
@@ -71,6 +73,7 @@ h1 {
 /* Main Panel */
 .main-panel {
     flex: 1;
+    order: 2; /* Domyślnie kalendarz będzie po filtrach */
 }
 
 .controls {
@@ -138,4 +141,19 @@ h1 {
     width: 70px;
     text-align: right;
     padding-right: 10px;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Na mniejszych ekranach elementy będą jeden pod drugim */
+    }
+
+    .left-panel {
+        width: 100%;
+    }
+
+    .main-panel {
+        width: 100%;
+    }
 }

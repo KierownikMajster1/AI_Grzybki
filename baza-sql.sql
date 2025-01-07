@@ -3,9 +3,16 @@ CREATE TABLE lecturers (
     name VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE faculties (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    faculty_name VARCHAR(255) NOT NULL
+);
+
 CREATE TABLE rooms (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    room_name VARCHAR(255) NOT NULL
+    room_name VARCHAR(255) NOT NULL,
+    faculty_id INT,
+    FOREIGN KEY (faculty_id) REFERENCES faculties(id)
 );
 
 CREATE TABLE subjects (
@@ -16,6 +23,13 @@ CREATE TABLE subjects (
 CREATE TABLE groups (
     id INT AUTO_INCREMENT PRIMARY KEY,
     group_name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE students (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    album_number VARCHAR(20) NOT NULL UNIQUE,
+    group_id INT,
+    FOREIGN KEY (group_id) REFERENCES groups(id)
 );
 
 CREATE TABLE schedules (

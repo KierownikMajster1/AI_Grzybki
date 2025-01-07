@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const weekViewBtn = document.getElementById('weekView');
     const monthViewBtn = document.getElementById('monthView');
 
-    let viewMode = 'week'; // Default view
+    let viewMode = 'week';
 
     function updateCalendar() {
         dayTable.style.display = 'none';
@@ -46,15 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const tbody = dayTable.querySelector('tbody');
         tbody.innerHTML = '';
 
-        const headerRow = document.createElement('tr');
-        const headerCell = document.createElement('th');
-        headerCell.textContent = `Dzień: ${currentDate.toLocaleDateString('pl-PL', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
-        headerCell.setAttribute('colspan', 1);
-        headerRow.appendChild(headerCell);
-        tbody.appendChild(headerRow);
-
         const row = document.createElement('tr');
         const cell = document.createElement('td');
+        cell.textContent = "Przykładowe wydarzenie - 10:00";
         row.appendChild(cell);
         tbody.appendChild(row);
     }
@@ -63,7 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const tbody = weekTable.querySelector('tbody');
         tbody.innerHTML = '';
         const hours = Array.from({ length: 13 }, (_, i) => `${8 + i}:00`);
-        hours.forEach(hour => {
+
+        for (const hour of hours) {
             const row = document.createElement('tr');
             const timeCell = document.createElement('td');
             timeCell.textContent = hour;
@@ -71,11 +66,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             for (let i = 0; i < 7; i++) {
                 const cell = document.createElement('td');
+                cell.textContent = `Dane ${hour} Dzień ${i + 1}`; // Dummy data
                 row.appendChild(cell);
             }
 
             tbody.appendChild(row);
-        });
+        }
     }
 
     function renderMonthTable() {
@@ -83,11 +79,11 @@ document.addEventListener('DOMContentLoaded', () => {
         tbody.innerHTML = '';
 
         const daysOfWeekRow = document.createElement('tr');
-        ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Niedz'].forEach(day => {
+        for (const day of ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Niedz']) {
             const dayCell = document.createElement('th');
             dayCell.textContent = day;
             daysOfWeekRow.appendChild(dayCell);
-        });
+        }
         tbody.appendChild(daysOfWeekRow);
 
         const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
@@ -106,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const cell = document.createElement('td');
-            cell.textContent = i;
+            cell.textContent = `Dzień ${i}`; // Dummy data
             row.appendChild(cell);
         }
 
