@@ -8,7 +8,7 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
     color: #333;
-    padding: 50px;
+    padding: 20px;
 }
 
 h1 {
@@ -20,7 +20,7 @@ h1 {
 .container {
     display: flex;
     gap: 20px;
-    flex-wrap: wrap; /* Dodanie tego pozwala na dostosowanie układu w węższych ekranach */
+    flex-wrap: wrap;
 }
 
 /* Left Panel */
@@ -29,7 +29,7 @@ h1 {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    order: 1; /* Domyślnie filtry będą na pierwszym miejscu */
+    order: 1;
 }
 
 .left-panel label {
@@ -51,6 +51,7 @@ h1 {
     padding: 10px;
     border-radius: 4px;
     cursor: pointer;
+    text-align: center;
 }
 
 .left-panel .btn-primary:hover {
@@ -64,6 +65,7 @@ h1 {
     padding: 10px;
     border-radius: 4px;
     cursor: pointer;
+    text-align: center;
 }
 
 .left-panel .btn-secondary:hover {
@@ -73,12 +75,12 @@ h1 {
 /* Main Panel */
 .main-panel {
     flex: 1;
-    order: 2; /* Domyślnie kalendarz będzie po filtrach */
+    order: 2;
 }
 
 .controls {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     margin-bottom: 20px;
 }
@@ -87,8 +89,12 @@ h1 {
     background-color: #e0e0e0;
     border: 1px solid #ccc;
     border-radius: 4px;
-    padding: 8px 16px;
+    width: 120px; /* Stała szerokość */
+    height: 40px; /* Stała wysokość */
     cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+    line-height: 40px;
 }
 
 .view-btn:hover, .arrow-btn:hover {
@@ -111,9 +117,9 @@ h1 {
 
 .calendar th, .calendar td {
     border: 1px solid #ccc;
-    padding: 5px;
+    padding: 8px;
     text-align: center;
-    font-size: 0.9em;
+    font-size: 1em;
 }
 
 .calendar th {
@@ -122,38 +128,63 @@ h1 {
 }
 
 .calendar td {
-    height: 30px;
+    height: 50px; /* Większa wysokość komórek */
     background-color: #fff;
+    word-wrap: break-word; /* Rozbijanie długich tekstów */
 }
 
+/* Widok dnia */
 #dayTable th {
     font-size: 1.2em;
 }
 
+/* Widok miesiąca */
 #monthTable td {
     background-color: #fff;
-    height: 60px;
+    height: 80px; /* Większa wysokość komórek */
+    vertical-align: top; /* Tekst na górze komórki */
 }
 
+/* Widok tygodnia */
 #weekTable td:first-child, #weekTable th:first-child {
     background-color: #f0f0f0;
     font-weight: bold;
-    width: 70px;
+    width: 50px; /* Zmniejszona szerokość kolumny z godzinami */
     text-align: right;
-    padding-right: 10px;
+    padding-right: 5px;
 }
 
 /* Media Queries */
 @media (max-width: 768px) {
     .container {
-        flex-direction: column; /* Na mniejszych ekranach elementy będą jeden pod drugim */
+        flex-direction: column; /* Na mniejszych ekranach elementy jeden pod drugim */
     }
 
     .left-panel {
-        width: 100%;
+        width: 100%; /* Pełna szerokość dla bocznego panelu */
     }
 
     .main-panel {
-        width: 100%;
+        width: 100%; /* Pełna szerokość dla kalendarza */
+    }
+
+    .calendar th, .calendar td {
+        font-size: 0.8em; /* Mniejszy tekst w kalendarzu */
+        padding: 5px; /* Mniejsze odstępy */
+    }
+
+    .view-btn, .arrow-btn {
+        width: 100px; /* Zmniejszona szerokość */
+        height: 35px; /* Zmniejszona wysokość */
+        font-size: 12px; /* Mniejszy tekst */
+    }
+
+    .date-display {
+        font-size: 1em; /* Zmniejszenie tekstu daty */
+    }
+
+    #weekTable td:first-child, #weekTable th:first-child {
+        width: 40px; /* Dodatkowe zmniejszenie kolumny godzin na małych ekranach */
+        font-size: 0.8em;
     }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,7 +28,8 @@
         <input type="text" id="studentId" placeholder="Wpisz numer albumu">
 
         <button id="searchBtn" class="btn-primary">Szukaj</button>
-        <button id="clearBtn" class="btn-secondary">Wyczyść filtry</button>
+        <button id="clearFiltersBtn" class="btn-secondary">Wyczyść filtry</button>
+
     </div>
 
     <!-- Main Panel -->
@@ -49,7 +50,10 @@
         <!-- Separate tables for each view -->
         <table class="calendar" id="dayTable" style="display: none;">
             <thead>
-                <tr></tr>
+                <tr>
+                    <th>Godzina</th>
+                    <th>Opis</th>
+                </tr>
             </thead>
             <tbody></tbody>
         </table>
@@ -57,7 +61,7 @@
         <table class="calendar" id="weekTable" style="display: none;">
             <thead>
                 <tr>
-                    <th>Godzina</th>
+                    <th></th>
                     <th>Pon</th>
                     <th>Wt</th>
                     <th>Śr</th>
@@ -73,6 +77,13 @@
         <table class="calendar" id="monthTable" style="display: none;">
             <thead>
                 <tr>
+                    <th>Pon</th>
+                    <th>Wt</th>
+                    <th>Śr</th>
+                    <th>Czw</th>
+                    <th>Pt</th>
+                    <th>Sob</th>
+                    <th>Niedz</th>
                 </tr>
             </thead>
             <tbody></tbody>
