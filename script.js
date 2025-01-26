@@ -121,30 +121,102 @@ function updateCalendarStyles() {
             'monthView': isPolish ? 'Miesiąc' : 'Month',
             'searchBtn': isPolish ? 'Szukaj' : 'Search',
             'clearFiltersBtn': isPolish ? 'Wyczyść filtry' : 'Clear Filters',
-            'lecturer': isPolish ? 'Wykładowca' : 'Lecturer',
-            'room': isPolish ? 'Sala' : 'Room',
-            'subject': isPolish ? 'Przedmiot' : 'Subject',
-            'group': isPolish ? 'Grupa' : 'Group',
-            'studentId': isPolish ? 'Numer albumu' : 'Student ID',
+            'lecturerLabel': isPolish ? 'Wykładowca' : 'Lecturer',
+            'roomLabel': isPolish ? 'Sala' : 'Room',
+            'subjectLabel': isPolish ? 'Przedmiot' : 'Subject',
+            'groupLabel': isPolish ? 'Grupa' : 'Group',
+            'studentIdLabel': isPolish ? 'Numer albumu' : 'Student ID',
             'bgColorBtn': isPolish ? 'Dobór koloru' : 'Pick color',
             'fontBtn': isPolish ? 'Zmiana czcionki' : 'Change font',
-            'languageBtn': isPolish ? 'Eng' : 'PL'
+            'languageBtn': isPolish ? 'Eng' : 'PL',
+            lecturerPlaceholder: isPolish ? 'Wpisz wykładowcę' : 'Enter lecturer',
+            roomPlaceholder: isPolish ? 'Wpisz salę' : 'Enter room',
+            subjectPlaceholder: isPolish ? 'Wpisz przedmiot' : 'Enter subject',
+            groupPlaceholder: isPolish ? 'Wpisz grupę' : 'Enter group',
+            studentIdPlaceholder: isPolish ? 'Wpisz numer albumu' : 'Enter student ID',
+            dayGeneral: isPolish ? 'Plan dnia' : 'Day Plan',
+            monthGeneral: isPolish ? 'Miesiąc' : 'Month',
+            weekGeneral: isPolish ? 'Tydzień' : 'Week',
+            daysOfWeek: isPolish
+                ? ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Niedz']
+                : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            dayTableHeaders: isPolish ? ['Godzina', 'Opis'] : ['Hour', 'Description'],
+            monthTableHeaders: isPolish
+                ? ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Niedz']
+                : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
         };
+        for (const id in texts) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.textContent = texts[id];
+            }
+        }
+
+        const weekTableHeaders = weekTable.querySelectorAll('thead tr th');
+        texts.daysOfWeek.forEach((day, index) => {
+            if (weekTableHeaders[index + 1]) {
+                weekTableHeaders[index + 1].textContent = day;
+            }
+        });
+
+        if (viewMode === 'week') {
+            const weekRange = getWeekRange(currentDate);
+            currentDateDisplay.textContent = `${texts.weekGeneral}: ${formatDate(weekRange.start)} - ${formatDate(weekRange.end)}`;
+        }
+        const dayTableHeaders = dayTable.querySelectorAll('thead tr th');
+        texts.dayTableHeaders.forEach((header, index) => {
+            if (dayTableHeaders[index]) {
+                dayTableHeaders[index].textContent = header;
+            }
+        });
+        const monthTableHeaders = monthTable.querySelectorAll('thead tr th');
+        texts.monthTableHeaders.forEach((header, index) => {
+            if (monthTableHeaders[index]) {
+                monthTableHeaders[index].textContent = header;
+            }
+        });
+
+        dayTable.style.display = 'none';
+        weekTable.style.display = 'none';
+        monthTable.style.display = 'none';
+
+        if (viewMode === 'day') {
+            currentDateDisplay.textContent = `${isPolish ? 'Plan dnia' : 'Day Plan'}: ${formatDate(currentDate)}`;
+            dayTable.style.display = 'table';
+        } else if (viewMode === 'week') {
+            const weekRange = getWeekRange(currentDate);
+            currentDateDisplay.textContent = `${isPolish ? 'Tydzień' : 'Week'}: ${formatDate(weekRange.start)} - ${formatDate(weekRange.end)}`;
+            weekTable.style.display = 'table';
+        } else if (viewMode === 'month') {
+            currentDateDisplay.textContent = `${isPolish ? 'Miesiąc' : 'Month'}: ${currentDate.toLocaleDateString(isPolish ? 'pl-PL' : 'en-US', {
+                month: 'long',
+                year: 'numeric'
+            })}`;
+            monthTable.style.display = 'table';
+        }
+
+
+        document.getElementById('lecturer').placeholder = texts.lecturerPlaceholder;
+        document.getElementById('room').placeholder = texts.roomPlaceholder;
+        document.getElementById('subject').placeholder = texts.subjectPlaceholder;
+        document.getElementById('group').placeholder = texts.groupPlaceholder;
+        document.getElementById('studentId').placeholder = texts.studentIdPlaceholder;
         document.getElementById('dayView').textContent = texts['dayView'];
         document.getElementById('weekView').textContent = texts['weekView'];
         document.getElementById('monthView').textContent = texts['monthView'];
         document.getElementById('searchBtn').textContent = texts['searchBtn'];
         document.getElementById('clearFiltersBtn').textContent = texts['clearFiltersBtn'];
-        document.getElementById('lecturer').textContent = texts['lecturer'];
-        document.getElementById('room').textContent = texts['room'];
-        document.getElementById('subject').textContent = texts['subject'];
-        document.getElementById('group').textContent = texts['group'];
-        document.getElementById('studentId').textContent = texts['studentId'];
+        document.getElementById('lecturerLabel').textContent = texts['lecturerLabel'];
+        document.getElementById('roomLabel').textContent = texts['roomLabel'];
+        document.getElementById('subjectLabel').textContent = texts['subjectLabel'];
+        document.getElementById('groupLabel').textContent = texts['groupLabel'];
+        document.getElementById('studentIdLabel').textContent = texts['studentIdLabel'];
         document.getElementById('bgColorBtn').textContent = texts['bgColorBtn'];
         document.getElementById('fontBtn').textContent = texts['fontBtn'];
         document.getElementById('languageBtn').textContent = texts['languageBtn'];
         document.getElementById('statistics').textContent = texts['statistics'];
         document.getElementById('semesterEndDate').textContent = texts['semesterEndDate'];
+
     }
     
 
