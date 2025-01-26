@@ -11,6 +11,90 @@ document.addEventListener('DOMContentLoaded', () => {
     const dayViewBtn = document.getElementById('dayView');
     const weekViewBtn = document.getElementById('weekView');
     const monthViewBtn = document.getElementById('monthView');
+    const body = document.body;
+    const themeToggle = document.getElementById("themeToggle");
+    const bgColorBtn = document.getElementById('bgColorBtn');
+    const languageBtn = document.getElementById('languageBtn');
+    const fontBtn = document.getElementById('fontBtn');
+
+    let isYellowBackground = false;
+    let isComicFont = false;
+    let isPolish = true;
+
+    bgColorBtn.addEventListener('click', () => {
+        isYellowBackground = !isYellowBackground;
+        if (isYellowBackground) {
+            body.classList.add('yellow-background');
+        } else {
+            body.classList.remove('yellow-background');
+        }
+    });
+
+    languageBtn.addEventListener('click', () => {
+        isPolish = !isPolish;
+        updateLanguage();
+    });
+
+    fontBtn.addEventListener('click', () => {
+        isComicFont = !isComicFont;
+        if (isComicFont) {
+            body.classList.add('font-comic-sans');
+            body.classList.remove('font-arial');
+        } else {
+            body.classList.add('font-arial');
+            body.classList.remove('font-comic-sans');
+        }
+    });
+
+    function updateLanguage() {
+        const texts = {
+            'dayView': isPolish ? 'Plan dnia' : 'Day Plan',
+            'weekView': isPolish ? 'Tydzień' : 'Week',
+            'monthView': isPolish ? 'Miesiąc' : 'Month',
+            'searchBtn': isPolish ? 'Szukaj' : 'Search',
+            'clearFiltersBtn': isPolish ? 'Wyczyść filtry' : 'Clear Filters',
+            'lecturerLabel': isPolish ? 'Wykładowca' : 'Lecturer',
+            'roomLabel': isPolish ? 'Sala' : 'Room',
+            'subjectLabel': isPolish ? 'Przedmiot' : 'Subject',
+            'groupLabel': isPolish ? 'Grupa' : 'Group',
+            'studentIdLabel': isPolish ? 'Numer albumu' : 'Student ID',
+            'bgColorBtn': isPolish ? 'Dobór koloru' : 'Pick color',
+            'fontBtn': isPolish ? 'Zmiana czcionki' : 'Change font',
+            'languageBtn': isPolish ? 'Eng' : 'PL'
+        };
+        document.getElementById('dayView').textContent = texts['dayView'];
+        document.getElementById('weekView').textContent = texts['weekView'];
+        document.getElementById('monthView').textContent = texts['monthView'];
+        document.getElementById('searchBtn').textContent = texts['searchBtn'];
+        document.getElementById('clearFiltersBtn').textContent = texts['clearFiltersBtn'];
+        document.getElementById('lecturerLabel').textContent = texts['lecturerLabel'];
+        document.getElementById('roomLabel').textContent = texts['roomLabel'];
+        document.getElementById('subjectLabel').textContent = texts['subjectLabel'];
+        document.getElementById('groupLabel').textContent = texts['groupLabel'];
+        document.getElementById('studentIdLabel').textContent = texts['studentIdLabel'];
+        document.getElementById('bgColorBtn').textContent = texts['bgColorBtn'];
+        document.getElementById('fontBtn').textContent = texts['fontBtn'];
+        document.getElementById('languageBtn').textContent = texts['languageBtn'];
+        document.getElementById('statistics').textContent = texts['statistics'];
+        document.getElementById('semesterEndDate').textContent = texts['semesterEndDate'];
+    }
+    
+    
+    const savedTheme = localStorage.getItem("theme") || "light";
+    body.classList.add(savedTheme + "-theme");
+    themeToggle.textContent = savedTheme === "dark" ? "🌙" : "☀️";
+    
+    themeToggle.addEventListener("click", () => {
+        const isDark = body.classList.contains("dark-theme");
+        body.classList.toggle("dark-theme", !isDark);
+        body.classList.toggle("light-theme", isDark);
+    
+        const newTheme = isDark ? "light" : "dark";
+        localStorage.setItem("theme", newTheme);
+    
+        themeToggle.textContent = newTheme === "dark" ? "🌙" : "☀️"; 
+    });
+    
 
     let viewMode = 'week';
 
@@ -33,6 +117,9 @@ document.addEventListener('DOMContentLoaded', () => {
             monthTable.style.display = 'table';
             renderMonthTable(fetchedData);
         }
+
+        displayStatistics(fetchedData); // Wyświetlanie statystyk
+        displaySemesterEndDate(); // Wyświetlanie daty zakończenia semestru
     }
 
     function getWeekRange(date) {
@@ -84,7 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateCalendar();
             });
     }
-    
 
     // Renderowanie widoków kalendarza (dnia, tygodnia, miesiąca)
     function renderDayTable(data) {
@@ -228,6 +314,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function displayStatistics(data) {
+        // Wyświetlanie liczby wydarzeń w danym okresie
+        const totalEvents = data.length;
+        document.getElementById('statistics').textContent = `Liczba zajęć: ${totalEvents}`;
+    }
+
+    function displaySemesterEndDate() {
+        // Możesz dostosować tę datę w zależności od kalendarza akademickiego
+        const semesterEndDate = new Date(currentDate.getFullYear(), 5, 30); // Przykładowa data: 30 czerwca
+        const semesterEndDisplay = document.getElementById('semesterEndDate');
+        semesterEndDisplay.textContent = `Semestr kończy się: ${formatDate(semesterEndDate)}`;
+    }
+
     prevBtn.addEventListener('click', () => {
         if (viewMode === 'day') {
             currentDate.setDate(currentDate.getDate() - 1);
@@ -268,4 +367,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('searchBtn').addEventListener('click', fetchAndRenderData);
 
     updateCalendar();
+
+    updateLanguage();
 });
