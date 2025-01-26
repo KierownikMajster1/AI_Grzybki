@@ -10,15 +10,26 @@ body {
     color: #333;
     padding: 20px;
 }
-body.light-theme {
+.light-theme {
     background-color: white;
     color: black;
 }
 
-body.dark-theme {
+.dark-theme {
     background-color: black;
-    color: rgba(153, 152, 152, 0.833);
+    color: white;
 }
+.yellow-black {
+    background-color: yellow;
+    color: black;
+}
+
+.black-yellow {
+    background-color: black;
+    color: yellow;
+}
+
+
 
 .controls-container {
     position: fixed;
@@ -34,18 +45,6 @@ body.dark-theme {
     display: flex;
     gap: 10px;
 }
-.theme-toggle-container {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 100; 
-}
-#themeToggle {
-    background-color: transparent;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-}
 
 .accessibility-container button {
     background-color: #f9f9f9;
@@ -59,9 +58,6 @@ body.dark-theme {
     background-color: #e0e0e0;
 }
 
-.yellow-background {
-    background-color: yellow !important;
-}
 
 .font-comic-sans {
     font-family: 'Comic Sans MS', cursive, sans-serif !important;
@@ -247,20 +243,4 @@ h1 {
         width: 40px; /* Dodatkowe zmniejszenie kolumny godzin na małych ekranach */
         font-size: 0.8em;
     }
-
-    #savePlanBtn {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-#savePlanBtn:hover {
-    background-color: #218838;
-}
-
-    
 }
