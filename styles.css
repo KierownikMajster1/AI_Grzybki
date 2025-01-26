@@ -10,6 +10,66 @@ body {
     color: #333;
     padding: 20px;
 }
+body.light-theme {
+    background-color: white;
+    color: black;
+}
+
+body.dark-theme {
+    background-color: black;
+    color: rgba(153, 152, 152, 0.833);
+}
+
+.controls-container {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 100;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.accessibility-container {
+    display: flex;
+    gap: 10px;
+}
+.theme-toggle-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 100; 
+}
+#themeToggle {
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.accessibility-container button {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.accessibility-container button:hover {
+    background-color: #e0e0e0;
+}
+
+.yellow-background {
+    background-color: yellow !important;
+}
+
+.font-comic-sans {
+    font-family: 'Comic Sans MS', cursive, sans-serif !important;
+}
+
+.font-arial {
+    font-family: Arial, sans-serif !important;
+}
 
 h1 {
     text-align: center;
