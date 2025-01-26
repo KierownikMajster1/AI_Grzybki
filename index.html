@@ -8,16 +8,22 @@
     <script defer src="script.js"></script>
 </head>
 <body>
-    <div class="theme-toggle-container">
-        <button id="themeToggle">Dark Mode</button>
-    </div>
-    <div class="accessibility-container">
-        <button id="bgColorBtn">Dobór koloru</button>
-        <button id="languageBtn">Eng</button>
-        <button id="fontBtn">Zmiana czcionki</button>
-    </div>
 
-    <h1>Plan ZUT</h1>
+<div class="accessibility-container">
+    <button id="languageBtn">Eng</button>
+    <button id="smallFontBtn">A</button>
+    <button id="mediumFontBtn">A+</button>
+    <button id="largeFontBtn">A++</button>
+</div>
+<label for="bgColorSelect">Zmiana tla</label>
+<select id="bgColorSelect">
+    <option value="light-theme">Default</option>
+    <option value="dark-theme">Dark</option>
+    <option value="yellow-black">Yellow-black</option>
+    <option value="black-yellow">Black-yellow</option>
+</select>
+
+<h1>Plan ZUT</h1>
     <div id="statistics"></div>
     <div id="semesterEndDate"></div>
 
