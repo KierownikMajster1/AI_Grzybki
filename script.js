@@ -12,41 +12,108 @@ document.addEventListener('DOMContentLoaded', () => {
     const weekViewBtn = document.getElementById('weekView');
     const monthViewBtn = document.getElementById('monthView');
     const body = document.body;
-    const themeToggle = document.getElementById("themeToggle");
-    const bgColorBtn = document.getElementById('bgColorBtn');
+    const bgColorSelect = document.getElementById('bgColorSelect');
     const languageBtn = document.getElementById('languageBtn');
-    const fontBtn = document.getElementById('fontBtn');
 
-    let isYellowBackground = false;
-    let isComicFont = false;
     let isPolish = true;
+    const savedTheme = localStorage.getItem('theme'); // Получаем сохранённую тему
 
-    bgColorBtn.addEventListener('click', () => {
-        isYellowBackground = !isYellowBackground;
-        if (isYellowBackground) {
-            body.classList.add('yellow-background');
-        } else {
-            body.classList.remove('yellow-background');
-        }
+if (savedTheme) {
+    body.classList.add(savedTheme); // Применяем сохранённую тему к body
+    const calendar = document.querySelector('.calendar');
+    if (calendar) {
+        calendar.classList.add(savedTheme); // Применяем тему к календарю
+    }
+    updateCalendarStyles(); // Обновляем стили календаря в зависимости от темы
+}
+
+// Слушатель для изменения темы
+bgColorSelect.addEventListener('change', (event) => {
+    const selectedMode = event.target.value;
+
+    // Удаляем старые классы
+    body.classList.remove('light-theme', 'dark-theme', 'yellow-black', 'black-yellow');
+    body.classList.add(selectedMode);
+
+    const calendar = document.querySelector('.calendar');
+    if (calendar) {
+        calendar.classList.remove('light-theme', 'dark-theme', 'yellow-black', 'black-yellow');
+        calendar.classList.add(selectedMode); // Применяем новую тему к календарю
+    }
+
+    updateCalendarStyles(); // Обновляем стили
+    localStorage.setItem('theme', selectedMode); // Сохраняем тему в localStorage
+});
+
+// Функция для обновления стилей календаря
+function updateCalendarStyles() {
+    const calendarHeaders = document.querySelectorAll('.calendar th');
+    const calendarCells = document.querySelectorAll('.calendar td');
+
+    calendarHeaders.forEach(header => {
+        header.style.backgroundColor = '';
+        header.style.color = '';
     });
 
+    calendarCells.forEach(cell => {
+        cell.style.backgroundColor = '';
+        cell.style.color = '';
+    });
+
+    if (body.classList.contains('light-theme')) {
+        calendarHeaders.forEach(header => {
+            header.style.backgroundColor = '#f0f0f0';
+            header.style.color = '#000';
+        });
+        calendarCells.forEach(cell => {
+            cell.style.backgroundColor = '#f0f0f0';
+            cell.style.color = '#000';
+        });
+    } else if (body.classList.contains('dark-theme')) {
+        calendarHeaders.forEach(header => {
+            header.style.backgroundColor = '#333';
+            header.style.color = 'white';
+        });
+        calendarCells.forEach(cell => {
+            cell.style.backgroundColor = '#333';
+            cell.style.color = 'white';
+        });
+    } else if (body.classList.contains('yellow-black')) {
+        calendarHeaders.forEach(header => {
+            header.style.backgroundColor = 'yellow';
+            header.style.color = 'black';
+        });
+        calendarCells.forEach(cell => {
+            cell.style.backgroundColor = 'yellow';
+            cell.style.color = 'black';
+        });
+    } else if (body.classList.contains('black-yellow')) {
+        calendarHeaders.forEach(header => {
+            header.style.backgroundColor = 'black';
+            header.style.color = 'yellow';
+        });
+        calendarCells.forEach(cell => {
+            cell.style.backgroundColor = 'black';
+            cell.style.color = 'yellow';
+        });
+    }
+}
     languageBtn.addEventListener('click', () => {
         isPolish = !isPolish;
         updateLanguage();
     });
 
-    fontBtn.addEventListener('click', () => {
-        isComicFont = !isComicFont;
-        if (isComicFont) {
-            body.classList.add('font-comic-sans');
-            body.classList.remove('font-arial');
-        } else {
-            body.classList.add('font-arial');
-            body.classList.remove('font-comic-sans');
-        }
+    document.getElementById('smallFontBtn').addEventListener('click', () => {
+        body.style.fontSize = '12px'; // Set small font size
     });
     
-
+    document.getElementById('mediumFontBtn').addEventListener('click', () => {
+        body.style.fontSize = '16px'; // Set medium font size
+    });
+    
+    document.getElementById('largeFontBtn').addEventListener('click', () => {
+        body.style.fontSize = '20px'; // Set large font size
+    });
     function updateLanguage() {
         const texts = {
             'dayView': isPolish ? 'Plan dnia' : 'Day Plan',
@@ -54,11 +121,11 @@ document.addEventListener('DOMContentLoaded', () => {
             'monthView': isPolish ? 'Miesiąc' : 'Month',
             'searchBtn': isPolish ? 'Szukaj' : 'Search',
             'clearFiltersBtn': isPolish ? 'Wyczyść filtry' : 'Clear Filters',
-            'lecturerLabel': isPolish ? 'Wykładowca' : 'Lecturer',
-            'roomLabel': isPolish ? 'Sala' : 'Room',
-            'subjectLabel': isPolish ? 'Przedmiot' : 'Subject',
-            'groupLabel': isPolish ? 'Grupa' : 'Group',
-            'studentIdLabel': isPolish ? 'Numer albumu' : 'Student ID',
+            'lecturer': isPolish ? 'Wykładowca' : 'Lecturer',
+            'room': isPolish ? 'Sala' : 'Room',
+            'subject': isPolish ? 'Przedmiot' : 'Subject',
+            'group': isPolish ? 'Grupa' : 'Group',
+            'studentId': isPolish ? 'Numer albumu' : 'Student ID',
             'bgColorBtn': isPolish ? 'Dobór koloru' : 'Pick color',
             'fontBtn': isPolish ? 'Zmiana czcionki' : 'Change font',
             'languageBtn': isPolish ? 'Eng' : 'PL'
@@ -68,33 +135,17 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('monthView').textContent = texts['monthView'];
         document.getElementById('searchBtn').textContent = texts['searchBtn'];
         document.getElementById('clearFiltersBtn').textContent = texts['clearFiltersBtn'];
-        document.getElementById('lecturerLabel').textContent = texts['lecturerLabel'];
-        document.getElementById('roomLabel').textContent = texts['roomLabel'];
-        document.getElementById('subjectLabel').textContent = texts['subjectLabel'];
-        document.getElementById('groupLabel').textContent = texts['groupLabel'];
-        document.getElementById('studentIdLabel').textContent = texts['studentIdLabel'];
+        document.getElementById('lecturer').textContent = texts['lecturer'];
+        document.getElementById('room').textContent = texts['room'];
+        document.getElementById('subject').textContent = texts['subject'];
+        document.getElementById('group').textContent = texts['group'];
+        document.getElementById('studentId').textContent = texts['studentId'];
         document.getElementById('bgColorBtn').textContent = texts['bgColorBtn'];
         document.getElementById('fontBtn').textContent = texts['fontBtn'];
         document.getElementById('languageBtn').textContent = texts['languageBtn'];
         document.getElementById('statistics').textContent = texts['statistics'];
         document.getElementById('semesterEndDate').textContent = texts['semesterEndDate'];
     }
-    
-    
-    const savedTheme = localStorage.getItem("theme") || "light";
-    body.classList.add(savedTheme + "-theme");
-    themeToggle.textContent = savedTheme === "dark" ? "🌙" : "☀️";
-    
-    themeToggle.addEventListener("click", () => {
-        const isDark = body.classList.contains("dark-theme");
-        body.classList.toggle("dark-theme", !isDark);
-        body.classList.toggle("light-theme", isDark);
-    
-        const newTheme = isDark ? "light" : "dark";
-        localStorage.setItem("theme", newTheme);
-    
-        themeToggle.textContent = newTheme === "dark" ? "🌙" : "☀️"; 
-    });
     
 
     let viewMode = 'week';
@@ -437,6 +488,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.removeChild(link);
     });
     
+
+
     document.getElementById('searchBtn').addEventListener('click', fetchAndRenderData);
 
     updateCalendar();
