@@ -8,96 +8,99 @@
     <script defer src="script.js"></script>
 </head>
 <body>
-<div class="theme-toggle-container">
-    <button id="themeToggle">Dark Mode</button>
-</div>
-<div class="accessibility-container">
-    <button id="bgColorBtn">Dobór koloru</button>
-    <button id="languageBtn">Eng</button>
-    <button id="fontBtn">Zmiana czcionki</button>
-</div>
-
-<h1>Plan ZUT</h1>
-<div class="container">
-    <!-- Left Panel -->
-    <div class="left-panel">
-        <label for="lecturer">Wykładowca</label>
-        <input type="text" id="lecturer" placeholder="Wpisz wykładowcę">
-
-        <label for="room">Sala</label>
-        <input type="text" id="room" placeholder="Wpisz salę">
-
-        <label for="subject">Przedmiot</label>
-        <input type="text" id="subject" placeholder="Wpisz przedmiot">
-
-        <label for="group">Grupa</label>
-        <input type="text" id="group" placeholder="Wpisz grupę">
-
-        <label for="studentId">Numer albumu</label>
-        <input type="text" id="studentId" placeholder="Wpisz numer albumu">
-
-        <button id="searchBtn" class="btn-primary">Szukaj</button>
-        <button id="clearFiltersBtn" class="btn-secondary">Wyczyść filtry</button>
-
+    <div class="theme-toggle-container">
+        <button id="themeToggle">Dark Mode</button>
+    </div>
+    <div class="accessibility-container">
+        <button id="bgColorBtn">Dobór koloru</button>
+        <button id="languageBtn">Eng</button>
+        <button id="fontBtn">Zmiana czcionki</button>
     </div>
 
-    <!-- Main Panel -->
-    <div class="main-panel">
-        <div class="controls">
-            <div>
-                <button id="dayView" class="view-btn">Plan dnia</button>
-                <button id="weekView" class="view-btn">Tydzień</button>
-                <button id="monthView" class="view-btn">Miesiąc</button>
-            </div>
-            <div class="date-display" id="currentDate">30.12 - 5.01.2025</div>
-            <div>
-                <button id="prevBtn" class="arrow-btn">&#8592;</button>
-                <button id="nextBtn" class="arrow-btn">&#8594;</button>
-            </div>
+    <h1>Plan ZUT</h1>
+    <div id="statistics"></div>
+    <div id="semesterEndDate"></div>
+
+    <div class="container">
+        <!-- Panel po lewej -->
+        <div class="left-panel">
+            <label for="lecturer">Wykładowca</label>
+            <input type="text" id="lecturer" placeholder="Wpisz wykładowcę">
+
+            <label for="room">Sala</label>
+            <input type="text" id="room" placeholder="Wpisz salę">
+
+            <label for="subject">Przedmiot</label>
+            <input type="text" id="subject" placeholder="Wpisz przedmiot">
+
+            <label for="group">Grupa</label>
+            <input type="text" id="group" placeholder="Wpisz grupę">
+
+            <label for="studentId">Numer albumu</label>
+            <input type="text" id="studentId" placeholder="Wpisz numer albumu">
+
+            <button id="searchBtn" class="btn-primary">Szukaj</button>
+            <button id="clearFiltersBtn" class="btn-secondary">Wyczyść filtry</button>
         </div>
 
-        <!-- Separate tables for each view -->
-        <table class="calendar" id="dayTable" style="display: none;">
-            <thead>
-                <tr>
-                    <th>Godzina</th>
-                    <th>Opis</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+        <!-- Główna sekcja -->
+        <div class="main-panel">
+            <div class="controls">
+                <div>
+                    <button id="dayView" class="view-btn">Plan dnia</button>
+                    <button id="weekView" class="view-btn">Tydzień</button>
+                    <button id="monthView" class="view-btn">Miesiąc</button>
+                    <button id="savePlanBtn" class="btn-primary">Zapisz plan</button>
 
-        <table class="calendar" id="weekTable" style="display: none;">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Pon</th>
-                    <th>Wt</th>
-                    <th>Śr</th>
-                    <th>Czw</th>
-                    <th>Pt</th>
-                    <th>Sob</th>
-                    <th>Niedz</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+                </div>
+                <div class="date-display" id="currentDate">30.12 - 5.01.2025</div>
+                <div>
+                    <button id="prevBtn" class="arrow-btn">&#8592;</button>
+                    <button id="nextBtn" class="arrow-btn">&#8594;</button>
+                </div>
+            </div>
 
-        <table class="calendar" id="monthTable" style="display: none;">
-            <thead>
-                <tr>
-                    <th>Pon</th>
-                    <th>Wt</th>
-                    <th>Śr</th>
-                    <th>Czw</th>
-                    <th>Pt</th>
-                    <th>Sob</th>
-                    <th>Niedz</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+            <table class="calendar" id="dayTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Godzina</th>
+                        <th>Opis</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <table class="calendar" id="weekTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Pon</th>
+                        <th>Wt</th>
+                        <th>Śr</th>
+                        <th>Czw</th>
+                        <th>Pt</th>
+                        <th>Sob</th>
+                        <th>Niedz</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <table class="calendar" id="monthTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Pon</th>
+                        <th>Wt</th>
+                        <th>Śr</th>
+                        <th>Czw</th>
+                        <th>Pt</th>
+                        <th>Sob</th>
+                        <th>Niedz</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
-</div>
 </body>
 </html>

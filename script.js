@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             body.classList.remove('font-comic-sans');
         }
     });
+    
 
     function updateLanguage() {
         const texts = {
@@ -216,34 +217,45 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderWeekTable(data, weekRange) {
         const tbody = weekTable.querySelector('tbody');
         tbody.innerHTML = '';
-
-        const hours = Array.from({ length: 13 }, (_, i) => `${8 + i}`);
+    
+        // Definicja okienek czasowych
+        const timeSlots = [
+            { slot: 1, startHour: 8, endHour: 10 },
+            { slot: 2, startHour: 10, endHour: 12 },
+            { slot: 3, startHour: 12, endHour: 14 },
+            { slot: 4, startHour: 14, endHour: 16 },
+            { slot: 5, startHour: 16, endHour: 18 },
+            { slot: 6, startHour: 18, endHour: 20 }
+        ];
         const days = ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Niedz'];
-
-        for (const hour of hours) {
+    
+        // Iteracja przez każde okienko
+        for (const slot of timeSlots) {
             const row = document.createElement('tr');
-            const timeCell = document.createElement('td');
-            timeCell.textContent = hour;
-            row.appendChild(timeCell);
-
+            const slotCell = document.createElement('td');
+            slotCell.textContent = slot.slot; // Wyświetlanie numeru okienka
+            row.appendChild(slotCell);
+    
+            // Iteracja przez dni tygodnia
             for (let i = 0; i < days.length; i++) {
                 const cell = document.createElement('td');
                 const dayStart = new Date(weekRange.start);
                 dayStart.setDate(dayStart.getDate() + i); // Przesunięcie o odpowiedni dzień tygodnia
-                dayStart.setHours(parseInt(hour, 10), 0, 0, 0);
-
+                dayStart.setHours(slot.startHour, 0, 0, 0);
+    
                 const dayEnd = new Date(dayStart);
-                dayEnd.setMinutes(59);
-
+                dayEnd.setHours(slot.endHour, 0, 0, 0);
+    
+                // Filtrujemy zajęcia pasujące do przedziału czasowego
                 const matchingEvents = data.filter(event => {
                     const eventStart = new Date(event.start_time);
                     const eventEnd = new Date(event.end_time);
                     return (
                         eventStart >= dayStart &&
-                        eventStart < dayEnd
+                        eventEnd <= dayEnd
                     );
                 });
-
+    
                 if (matchingEvents.length > 0) {
                     cell.innerHTML = matchingEvents
                         .map(event => {
@@ -257,13 +269,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     cell.textContent = '-';
                 }
-
+    
                 row.appendChild(cell);
             }
-
+    
             tbody.appendChild(row);
         }
     }
+    
 
     function renderMonthTable(data) {
         const tbody = monthTable.querySelector('tbody');
@@ -363,7 +376,67 @@ document.addEventListener('DOMContentLoaded', () => {
         viewMode = 'month';
         updateCalendar();
     });
-
+    const savePlanBtn = document.getElementById('savePlanBtn');
+    
+    savePlanBtn.addEventListener('click', () => {
+        if (!fetchedData || fetchedData.length === 0) {
+            alert('Brak danych do zapisania!');
+            return;
+        }
+    
+        let csvContent = 'data:text/csv;charset=utf-8,';
+    
+        if (viewMode === 'day') {
+            // Plan dnia
+            const dayStart = new Date(currentDate).setHours(0, 0, 0, 0);
+            const dayEnd = new Date(currentDate).setHours(23, 59, 59, 999);
+    
+            const filteredData = fetchedData.filter(event => {
+                const eventStart = new Date(event.start_time).getTime();
+                return eventStart >= dayStart && eventStart <= dayEnd;
+            });
+    
+            csvContent += filteredData.map(event =>
+                `${event.start_time},${event.end_time},${event.subject_name},${event.room_name}`
+            ).join('\n');
+    
+        } else if (viewMode === 'week') {
+            // Plan tygodnia
+            const weekRange = getWeekRange(currentDate);
+            const filteredData = fetchedData.filter(event => {
+                const eventStart = new Date(event.start_time).getTime();
+                return eventStart >= weekRange.start.getTime() && eventStart <= weekRange.end.getTime();
+            });
+    
+            csvContent += filteredData.map(event =>
+                `${event.start_time},${event.end_time},${event.subject_name},${event.room_name}`
+            ).join('\n');
+    
+        } else if (viewMode === 'month') {
+            // Plan miesiąca
+            const monthStart = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getTime();
+            const monthEnd = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getTime();
+    
+            const filteredData = fetchedData.filter(event => {
+                const eventStart = new Date(event.start_time).getTime();
+                return eventStart >= monthStart && eventStart <= monthEnd;
+            });
+    
+            csvContent += filteredData.map(event =>
+                `${event.start_time},${event.end_time},${event.subject_name},${event.room_name}`
+            ).join('\n');
+        }
+    
+        // Pobieranie pliku
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement('a');
+        link.setAttribute('href', encodedUri);
+        link.setAttribute('download', `plan_${viewMode}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
+    
     document.getElementById('searchBtn').addEventListener('click', fetchAndRenderData);
 
     updateCalendar();

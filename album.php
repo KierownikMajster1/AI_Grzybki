@@ -9,6 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(204);
     exit;
 }
+http_response_code(204);
 
 try {
     // Połączenie z bazą danych
@@ -97,6 +98,8 @@ try {
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
         $savedData[] = $row;
     }
+
+    
 
     echo json_encode(['status' => 'success', 'data' => $savedData]);
 } catch (Exception $e) {

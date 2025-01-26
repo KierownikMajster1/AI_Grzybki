@@ -247,4 +247,20 @@ h1 {
         width: 40px; /* Dodatkowe zmniejszenie kolumny godzin na małych ekranach */
         font-size: 0.8em;
     }
+
+    #savePlanBtn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#savePlanBtn:hover {
+    background-color: #218838;
+}
+
+    
 }
