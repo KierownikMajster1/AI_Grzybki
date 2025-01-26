@@ -119,6 +119,7 @@ function updateCalendarStyles() {
             'dayView': isPolish ? 'Plan dnia' : 'Day Plan',
             'weekView': isPolish ? 'Tydzień' : 'Week',
             'monthView': isPolish ? 'Miesiąc' : 'Month',
+            'savePlanBtn': isPolish ? 'Zapisz plan' : 'Save Plan',
             'searchBtn': isPolish ? 'Szukaj' : 'Search',
             'clearFiltersBtn': isPolish ? 'Wyczyść filtry' : 'Clear Filters',
             'lecturerLabel': isPolish ? 'Wykładowca' : 'Lecturer',
