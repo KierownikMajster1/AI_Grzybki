@@ -1,15 +1,26 @@
 <?php
 require 'config.php';
-require 'db_helper.php';
 require 'curl_helper.php';
+require_once 'models/Lecturer.php';
+require_once 'models/Group.php';
+require_once 'models/Subject.php';
+require_once 'models/Room.php';
+require_once 'models/Faculty.php';
+require_once 'models/Schedule.php';
 
-function scrapeTeachersWithPlans($db) {
+function scrapeTeachersWithPlans() {
     $alphabet = array_merge(range('A', 'Z'), ['Ą', 'Ć', 'Ę', 'Ł', 'Ń', 'Ó', 'Ś', 'Ź', 'Ż']);
     $startDate = '2024-10-01T00:00:00+01:00';
     $endDate = '2025-02-02T00:00:00+01:00';
 
-    for ($i = 0; $i < count($alphabet); $i++) {
-        $letter = $alphabet[$i];
+    $lecturerModel = new Lecturer();
+    $groupModel = new Group();
+    $subjectModel = new Subject();
+    $roomModel = new Room();
+    $facultyModel = new Faculty();
+    $scheduleModel = new Schedule();
+
+    foreach ($alphabet as $letter) {
         $url = "https://plan.zut.edu.pl/schedule.php?kind=teacher&query=" . urlencode($letter);
         $teacherData = fetchData($url);
 
@@ -18,21 +29,19 @@ function scrapeTeachersWithPlans($db) {
             continue;
         }
 
-        for ($j = 0; $j < count($teacherData); $j++) {
-            $teacherItem = $teacherData[$j];
+        foreach ($teacherData as $teacherItem) {
             if (isset($teacherItem['item'])) {
                 $teacherName = $teacherItem['item'];
 
                 // Wstawienie nauczyciela do bazy
-                insertIfNotExists($db, 'lecturers', [
-                    'name' => $teacherName
-                ], ['name']);
-                $lecturerId = getIdByName($db, 'lecturers', 'name', $teacherName);
+                $lecturerModel->insertIfNotExists(['name' => $teacherName], ['name']);
+                $lecturer = $lecturerModel->findBy('name', $teacherName);
 
-                if (!$lecturerId) {
+                if (!$lecturer) {
                     echo "[ERROR] Nie znaleziono ID dla nauczyciela: $teacherName\n";
                     continue;
                 }
+                $lecturerId = $lecturer['id'];
 
                 // Pobranie planu zajęć nauczyciela
                 $planUrl = "https://plan.zut.edu.pl/schedule_student.php?teacher=" . urlencode($teacherName) . "&start=$startDate&end=$endDate";
@@ -43,8 +52,7 @@ function scrapeTeachersWithPlans($db) {
                     continue;
                 }
 
-                for ($k = 0; $k < count($scheduleData); $k++) {
-                    $entry = $scheduleData[$k];
+                foreach ($scheduleData as $entry) {
                     if (!is_array($entry) || !isset($entry['subject'])) {
                         continue;
                     }
@@ -63,41 +71,32 @@ function scrapeTeachersWithPlans($db) {
                         $roomName = $roomParts[1] ?? null;
                     }
 
+                    $groupId = null;
                     if ($groupName) {
-                        insertIfNotExists($db, 'groups', [
-                            'group_name' => $groupName
-                        ], ['group_name']);
-                        $groupId = getIdByName($db, 'groups', 'group_name', $groupName);
-                    } else {
-                        $groupId = null;
+                        $groupModel->insertIfNotExists(['group_name' => $groupName], ['group_name']);
+                        $group = $groupModel->findBy('group_name', $groupName);
+                        $groupId = $group['id'] ?? null;
                     }
 
+                    $subjectId = null;
                     if ($subjectName) {
-                        insertIfNotExists($db, 'subjects', [
-                            'subject_name' => $subjectName
-                        ], ['subject_name']);
-                        $subjectId = getIdByName($db, 'subjects', 'subject_name', $subjectName);
-                    } else {
-                        $subjectId = null;
+                        $subjectModel->insertIfNotExists(['subject_name' => $subjectName], ['subject_name']);
+                        $subject = $subjectModel->findBy('subject_name', $subjectName);
+                        $subjectId = $subject['id'] ?? null;
                     }
 
+                    $facultyId = null;
                     if ($faculty) {
-                        insertIfNotExists($db, 'faculties', [
-                            'faculty_name' => $faculty
-                        ], ['faculty_name']);
-                        $facultyId = getIdByName($db, 'faculties', 'faculty_name', $faculty);
-                    } else {
-                        $facultyId = null;
+                        $facultyModel->insertIfNotExists(['faculty_name' => $faculty], ['faculty_name']);
+                        $faculty = $facultyModel->findBy('faculty_name', $faculty);
+                        $facultyId = $faculty['id'] ?? null;
                     }
 
+                    $roomId = null;
                     if ($roomName) {
-                        insertIfNotExists($db, 'rooms', [
-                            'room_name' => $roomName,
-                            'faculty_id' => $facultyId
-                        ], ['room_name']);
-                        $roomId = getIdByName($db, 'rooms', 'room_name', $roomName);
-                    } else {
-                        $roomId = null;
+                        $roomModel->insertIfNotExists(['room_name' => $roomName, 'faculty_id' => $facultyId], ['room_name']);
+                        $room = $roomModel->findBy('room_name', $roomName);
+                        $roomId = $room['id'] ?? null;
                     }
 
                     if (!$lecturerId || !$roomId || !$subjectId || !$groupId) {
@@ -105,14 +104,14 @@ function scrapeTeachersWithPlans($db) {
                         continue;
                     }
 
-                    insertIfNotExists($db, 'schedules', [
+                    $scheduleModel->insert([
                         'lecturer_id' => $lecturerId,
                         'room_id' => $roomId,
                         'subject_id' => $subjectId,
                         'group_id' => $groupId,
                         'start_time' => $startTime,
                         'end_time' => $endTime
-                    ], ['start_time', 'end_time', 'lecturer_id', 'room_id', 'subject_id', 'group_id']);
+                    ]);
                 }
                 echo "[INFO] Przetworzono plan dla nauczyciela: $teacherName\n";
             }
@@ -121,5 +120,4 @@ function scrapeTeachersWithPlans($db) {
 }
 
 // Wywołanie funkcji
-scrapeTeachersWithPlans($db);
-?>
+scrapeTeachersWithPlans();
