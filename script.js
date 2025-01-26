@@ -16,36 +16,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const languageBtn = document.getElementById('languageBtn');
 
     let isPolish = true;
-    const savedTheme = localStorage.getItem('theme'); // Получаем сохранённую тему
+    const savedTheme = localStorage.getItem('theme');
 
 if (savedTheme) {
-    body.classList.add(savedTheme); // Применяем сохранённую тему к body
+    body.classList.add(savedTheme);
     const calendar = document.querySelector('.calendar');
     if (calendar) {
-        calendar.classList.add(savedTheme); // Применяем тему к календарю
+        calendar.classList.add(savedTheme);
     }
-    updateCalendarStyles(); // Обновляем стили календаря в зависимости от темы
+    updateCalendarStyles();
+    bgColorSelect.value = savedTheme;
 }
 
-// Слушатель для изменения темы
 bgColorSelect.addEventListener('change', (event) => {
     const selectedMode = event.target.value;
 
-    // Удаляем старые классы
     body.classList.remove('light-theme', 'dark-theme', 'yellow-black', 'black-yellow');
     body.classList.add(selectedMode);
 
     const calendar = document.querySelector('.calendar');
     if (calendar) {
         calendar.classList.remove('light-theme', 'dark-theme', 'yellow-black', 'black-yellow');
-        calendar.classList.add(selectedMode); // Применяем новую тему к календарю
+        calendar.classList.add(selectedMode);
     }
 
-    updateCalendarStyles(); // Обновляем стили
-    localStorage.setItem('theme', selectedMode); // Сохраняем тему в localStorage
+    updateCalendarStyles();
+
+    localStorage.setItem('theme', selectedMode);
 });
 
-// Функция для обновления стилей календаря
 function updateCalendarStyles() {
     const calendarHeaders = document.querySelectorAll('.calendar th');
     const calendarCells = document.querySelectorAll('.calendar td');
@@ -59,7 +58,6 @@ function updateCalendarStyles() {
         cell.style.backgroundColor = '';
         cell.style.color = '';
     });
-
     if (body.classList.contains('light-theme')) {
         calendarHeaders.forEach(header => {
             header.style.backgroundColor = '#f0f0f0';
@@ -98,6 +96,7 @@ function updateCalendarStyles() {
         });
     }
 }
+
     languageBtn.addEventListener('click', () => {
         isPolish = !isPolish;
         updateLanguage();
@@ -119,7 +118,6 @@ function updateCalendarStyles() {
             'dayView': isPolish ? 'Plan dnia' : 'Day Plan',
             'weekView': isPolish ? 'Tydzień' : 'Week',
             'monthView': isPolish ? 'Miesiąc' : 'Month',
-            'savePlanBtn': isPolish ? 'Zapisz plan' : 'Save Plan',
             'searchBtn': isPolish ? 'Szukaj' : 'Search',
             'clearFiltersBtn': isPolish ? 'Wyczyść filtry' : 'Clear Filters',
             'lecturerLabel': isPolish ? 'Wykładowca' : 'Lecturer',
